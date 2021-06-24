@@ -20,17 +20,32 @@ const setting = {
     start: false,
     score: false,
     speed: 3,
+    traffic: 3
+}
+
+function getQuantityElements(heightElement) {
+    return document.documentElement.clientHeight / heightElement + 1
 }
 
 function startGame() {
     start.classList.add('hide')
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < getQuantityElements(100); i++) {
         const line = document.createElement('div')
         line.classList.add('line')
         line.style.top = (i * 100) + 'px'
         line.y = i * 100
         gameArea.appendChild(line)
+    }
+
+    for (let i = 0; i < getQuantityElements(100 * setting.traffic); i++) {
+        const enemy = document.createElement('div')
+        enemy.classList.add('enemy')
+        enemy.y = -100 * setting.traffic * (i + 1)
+        enemy.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px'
+        enemy.style.top = enemy.y + 'px'
+        enemy.style.background = 'transparent url("./image/enemy2.png") center / cover no-repeat'
+        gameArea.appendChild(enemy)
     }
     setting.start = true
     gameArea.appendChild(car)
@@ -42,6 +57,7 @@ function startGame() {
 function playGame() {
     if (setting.start) {
         moveRoad()
+        moveEnemy()
         if (keys.ArrowLeft && setting.x > 0) {
             setting.x -= setting.speed
         }
@@ -80,8 +96,22 @@ function moveRoad() {
         line.y += setting.speed
         line.style.top = line.y + 'px'
 
-        if (line.y > document.documentElement.clientHeight) {
+        if (line.y >= document.documentElement.clientHeight) {
             line.y = -100
+        }
+    })
+
+
+}
+
+function moveEnemy() {
+    let enemy = document.querySelectorAll('.enemy')
+    enemy.forEach(function (enemyItem) {
+        enemyItem.y += setting.speed / 2
+        enemyItem.style.top = enemyItem.y + 'px'
+        if (enemyItem.y >= document.documentElement.clientHeight) {
+            enemyItem.y = -100 * setting.traffic
+            enemyItem.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px'
         }
     })
 
