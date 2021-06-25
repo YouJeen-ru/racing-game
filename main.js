@@ -9,6 +9,8 @@ start.addEventListener('click', startGame)
 document.addEventListener('keydown', startRun)
 document.addEventListener('keyup', stopRun)
 
+const MAX_ENEMY = 9
+
 const keys = {
     ArrowUp: false,
     ArrowDown: false,
@@ -27,6 +29,8 @@ function getQuantityElements(heightElement) {
     return document.documentElement.clientHeight / heightElement + 1
 }
 
+const getRandomEnemy = (max) =>  Math.floor((Math.random() * max) + 1)
+
 function startGame() {
     start.classList.add('hide')
 
@@ -44,7 +48,7 @@ function startGame() {
         enemy.y = -100 * setting.traffic * (i + 1)
         enemy.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px'
         enemy.style.top = enemy.y + 'px'
-        enemy.style.background = 'transparent url("./image/enemy2.png") center / cover no-repeat'
+        enemy.style.background = `transparent url(./image/enemy${getRandomEnemy(MAX_ENEMY)}.png) center / cover no-repeat`
         gameArea.appendChild(enemy)
     }
     setting.start = true
