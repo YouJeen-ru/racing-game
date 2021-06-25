@@ -32,6 +32,7 @@ function getQuantityElements(heightElement) {
 const getRandomEnemy = (max) =>  Math.floor((Math.random() * max) + 1)
 
 function startGame() {
+    gameArea.style.minHeight = 100 + 'vh'
     start.classList.add('hide')
 
     for (let i = 0; i < getQuantityElements(100); i++) {
@@ -84,14 +85,17 @@ function playGame() {
 }
 
 function startRun(event) {
-    event.preventDefault()
-    keys[event.key] = true
-
+    if (keys.hasOwnProperty(event.key)) {
+        event.preventDefault()
+        keys[event.key] = true
+    }
 }
 
 function stopRun(event) {
-    event.preventDefault()
-    keys[event.key] = false
+    if (keys.hasOwnProperty(event.key)) {
+        event.preventDefault()
+        keys[event.key] = false
+    }
 }
 
 function moveRoad() {
